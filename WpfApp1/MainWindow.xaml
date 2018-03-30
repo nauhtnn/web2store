@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        Title="MainWindow" Height="450" Width="954">
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Height="39" Margin="78,10,0,0" TextWrapping="Wrap" Text="Open XML 2.5 example" VerticalAlignment="Top" Width="525" FontSize="24"/>
-        <TextBlock HorizontalAlignment="Left" Height="22" Margin="63,78,0,0" TextWrapping="Wrap" Text="File path" VerticalAlignment="Top" Width="65"/>
-        <TextBox Name="tbxFilePath" HorizontalAlignment="Left" Height="23" Margin="160,77,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="586"/>
-        <Button Content="Load" HorizontalAlignment="Left" Height="23" Margin="218,175,0,0" VerticalAlignment="Top" Width="115" Click="Button_Click" RenderTransformOrigin="0.574,2.652"/>
-        <Button x:Name="btnBrowse" Content="Browse" Click="btnBrowse_Click" HorizontalAlignment="Left" Margin="63,116,0,0" Width="107" Height="24" VerticalAlignment="Top"/>
-        <ScrollViewer x:Name="scrvwrResult" HorizontalAlignment="Left" Height="300" Margin="60,229,0,0" VerticalAlignment="Top" Width="543" />
+        <TextBlock HorizontalAlignment="Center" Margin="96,30,63,0" TextWrapping="Wrap" Text="TRUNG TÂM TIN HỌC NGOẠI NGỮ LONG AN" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="36" Width="787" FontWeight="Bold" Foreground="#FFE00D3D"/>
+        <Button Content="VÀO CHƯƠNG TRÌNH" HorizontalAlignment="Left" Margin="187,210,0,0" VerticalAlignment="Top" Width="241" Height="48" FontFamily="Times New Roman" FontSize="24" FontWeight="Bold" Foreground="#FF0916A0" Click="Button_Click"/>
+        <Button Content="THOÁT" HorizontalAlignment="Left" Margin="532,210,0,0" VerticalAlignment="Top" Width="127" Foreground="#FF2CB604" FontWeight="Bold" FontFamily="Times New Roman" FontSize="22" Height="48">
+            <Button.Background>
+                <ImageBrush Stretch="Uniform"/>
+            </Button.Background>
+        </Button>
+
     </Grid>
 </Window>
