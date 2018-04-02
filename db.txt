@@ -1,0 +1,20 @@
+Create table HoSo
+(
+	SoBaoDanh nvarchar(10) not null,
+	HoVaTen nvarchar(100) not null,
+	SinhNgay datetime not null,
+	NoiSinh nvarchar(300) not null,
+	----- Tin Hoc----
+	DiemLyThuyet int not null,
+	DiemThucHanh int not null,
+	---- Anh Van----
+	DiemNghe int not null,
+	DiemDocViet int not null,
+	DiemNoi int not null,
+	----Ket qua----
+	primary key (SoBaoDanh)
+)
+
+
+
+
