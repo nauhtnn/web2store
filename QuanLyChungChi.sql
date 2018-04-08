@@ -1,4 +1,33 @@
-﻿Create table HoSo
+﻿CREATE TABLE w2s_test_type (
+	test_type_id TINYINT IDENTITY(1,1) PRIMARY KEY,
+	test_type_str CHAR(4),
+);
+INSERT INTO w2s_test_type VALUES ('EN_A'), ('EN_B'), ('EN_C'), ('IT_A'), ('IT_B');
+CREATE TABLE w2s_board (
+	board_date DATE,
+	test_type_id TINYINT,
+	PRIMARY KEY(board_date, test_type_id),
+	FOREIGN KEY(test_type_id) REFERENCES w2s_test_type(test_type_id)
+);
+INSERT INTO w2s_board VALUES ('2017-11-12',1), ('2017-12-17',1), ('2018-01-28',1);
+CREATE TABLE w2s_examinee (
+	board_date DATE,
+	test_type_id TINYINT,
+	examinee_index SMALLINT,
+	name VARCHAR(32),
+	birth_date DATE,
+	birth_place VARCHAR(64),
+	grade_1 FLOAT,
+	grade_2 FLOAT,
+	grade_3 FLOAT,
+	PRIMARY KEY(board_date, test_type_id, examinee_index),
+	FOREIGN KEY(board_date, test_type_id) REFERENCES w2s_board(board_date, test_type_id),
+	CHECK((3 < test_type_id AND grade_3 IS NULL) OR (test_type_id < 4 AND grade_3 IS NOT NULL))
+);
+DROP TABLE w2s_examinee;
+DROP TABLE w2s_board;
+DROP TABLE w2s_test_type;
+Create table HoSo
 (
 	SoBaoDanh nvarchar(10) not null,
 	Ngaythi date not null,
