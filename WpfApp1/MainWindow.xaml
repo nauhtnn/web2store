@@ -9,45 +9,80 @@
     <Window.Resources>
         <SolidColorBrush x:Key="Brush1" Color="#FFDDDDDD"/>
     </Window.Resources>
-    <Grid Margin="8,10,-8,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="408*"/>
-            <ColumnDefinition Width="761*"/>
-            <ColumnDefinition Width="0*"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Stretch" Margin="140,10,0,0" TextWrapping="Wrap" Text="TRUNG TÂM NGOẠI NGỮ TIN HỌC LONG AN" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="24" FontWeight="Bold" Foreground="#FFF31515" Height="28" Grid.ColumnSpan="2"/>
-        <TextBlock HorizontalAlignment="Left" Margin="48,79,0,0" TextWrapping="Wrap" Text="HỌ VÀ TÊN" VerticalAlignment="Top" Height="23" FontWeight="Bold" FontSize="16" Foreground="#FF0849B9" Width="98"/>
-        <TextBox x:Name="TextBox1" HorizontalAlignment="Left" Height="23" Margin="157,79,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="169" TextChanged="TextBox1_TextChanged"/>
-        <Button Content="TÌM KIẾM THEO TÊN" HorizontalAlignment="Left" Margin="48,325,0,0" VerticalAlignment="Top" Width="162" FontWeight="Bold" Height="73" FontSize="14" Background="#FF6EDFE4" Foreground="#FFDA14D1"/>
-        <Button Content="TÌM KIẾM THEO HỌ" HorizontalAlignment="Left" Margin="283,325,0,0" VerticalAlignment="Top" Width="162" FontWeight="Bold" Height="73" Click="Button_Click"  FontSize="14" Background="#FF8EE6EA" Foreground="#FFCB34C4" Grid.ColumnSpan="2"/>
-        <Button Content="TÌM KIẾM THEO NGÀY THI" HorizontalAlignment="Left" Margin="102,325,0,0" VerticalAlignment="Top" Width="196" FontWeight="Bold" Height="73" FontSize="14" Background="#FF64E7EE" Foreground="#FFB21DAB" Grid.Column="1"/>
-        <Button Content="TÌM TÊN VỚI TÊN CHÍNH XÁC" HorizontalAlignment="Left" Margin="373,325,0,0" VerticalAlignment="Top" Width="251" Height="73" FontSize="14
+    <StackPanel Loaded="Main_Loaded">
+        <TabControl>
+            <TabItem Header="Nhân viên">
+                <Grid Height="486">
+                    <TextBlock Text="Ngày thi"/>
+                    <TextBox x:Name="tbxDate" Margin="76,0,920,461"/>
+                    <TextBlock Text="Loại chứng chỉ" Margin="324,0,-324,0"/>
+                    <Button x:Name="btnLoad" Click="btnLoad_Click" Content="Load" Margin="10,104,1024,342" Height="39" RenderTransformOrigin="-0.395,1.436"/>
+                    <Button x:Name="btnImport" Click="btnImport_Click" Content="Nhập CSDL" Height="39" Width="80" Margin="256,104,827,342"/>
+                    <ScrollViewer HorizontalAlignment="Left" Height="238" Margin="21,172,0,-125" VerticalAlignment="Top" Width="681">
+                        <Grid RenderTransformOrigin="0.508,0.482" Width="681">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="24" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="SBD" Grid.Row="0" Grid.Column="0"/>
+                            <TextBlock Text="Họ và tên" Grid.Row="0" Grid.Column="1"/>
+                            <TextBlock Text="Ngày sinh" Grid.Row="0" Grid.Column="2"/>
+                            <TextBlock Text="Địa chỉ" Grid.Row="0" Grid.Column="3"/>
+                            <TextBlock Text="Điểm thi" Grid.Row="0" Grid.Column="4"/>
+                            <TextBlock Text="Kết quả" Grid.Row="0" Grid.Column="5"/>
+                        </Grid>
+                    </ScrollViewer>
+                    <ComboBox x:Name="cbxTestType" HorizontalAlignment="Left" Height="25" Margin="450,0,0,0" VerticalAlignment="Top" Width="143"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Thí sinh">
+                <Grid Margin="8,10,-8,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="408*"/>
+                        <ColumnDefinition Width="761*"/>
+                        <ColumnDefinition Width="0*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock HorizontalAlignment="Stretch" Margin="140,10,0,0" TextWrapping="Wrap" Text="TRUNG TÂM NGOẠI NGỮ TIN HỌC LONG AN" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="24" FontWeight="Bold" Foreground="#FFF31515" Height="28" Grid.ColumnSpan="2"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="48,79,0,0" TextWrapping="Wrap" Text="HỌ VÀ TÊN" VerticalAlignment="Top" Height="23" FontWeight="Bold" FontSize="16" Foreground="#FF0849B9" Width="98"/>
+                    <TextBox x:Name="TextBox1" HorizontalAlignment="Left" Height="23" Margin="157,79,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="169" TextChanged="TextBox1_TextChanged"/>
+                    <Button Content="TÌM KIẾM THEO TÊN" HorizontalAlignment="Left" Margin="48,325,0,0" VerticalAlignment="Top" Width="162" FontWeight="Bold" Height="73" FontSize="14" Background="#FF6EDFE4" Foreground="#FFDA14D1"/>
+                    <Button Content="TÌM KIẾM THEO HỌ" HorizontalAlignment="Left" Margin="283,325,0,0" VerticalAlignment="Top" Width="162" FontWeight="Bold" Height="73" Click="Button_Click"  FontSize="14" Background="#FF8EE6EA" Foreground="#FFCB34C4" Grid.ColumnSpan="2"/>
+                    <Button Content="TÌM KIẾM THEO NGÀY THI" HorizontalAlignment="Left" Margin="102,325,0,0" VerticalAlignment="Top" Width="196" FontWeight="Bold" Height="73" FontSize="14" Background="#FF64E7EE" Foreground="#FFB21DAB" Grid.Column="1"/>
+                    <Button Content="TÌM TÊN VỚI TÊN CHÍNH XÁC" HorizontalAlignment="Left" Margin="373,325,0,0" VerticalAlignment="Top" Width="251" Height="73" FontSize="14
                 " FontWeight="Bold" Background="#FF76E1E6" Foreground="#FFAE13A7" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="48,123,0,0" TextWrapping="Wrap" Text="NGÀY THI" VerticalAlignment="Top" OpacityMask="#FF1515CF" FontWeight="Bold" FontSize="14" Width="88" Height="24" Foreground="#FF0C4FC5"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="157,123,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="169"/>
-        <Button Content="THOÁT" HorizontalAlignment="Left" Margin="48,206,0,0" VerticalAlignment="Top" Width="162" Click="Button_Click_1"  FontWeight="Bold" FontSize="18" Height="79" BorderBrush="#FF7BD6D2" Background="#FF8EEAEA"/>
-        <ScrollViewer Grid.Column="1" HorizontalAlignment="Left" Height="238" Margin="1,47,0,0" VerticalAlignment="Top" Width="681">
-            <Grid RenderTransformOrigin="0.508,0.482" Width="681">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="24" />
-                </Grid.RowDefinitions>
-                <TextBlock Text="SBD" Grid.Row="0" Grid.Column="0"></TextBlock>
-                <TextBlock Text="Họ và tên" Grid.Row="0" Grid.Column="1"></TextBlock>
-                <TextBlock Text="Ngày sinh" Grid.Row="0" Grid.Column="2"></TextBlock>
-                <TextBlock Text="Địa chỉ" Grid.Row="0" Grid.Column="3"></TextBlock>
-                <TextBlock Text="Điểm thi" Grid.Row="0" Grid.Column="4"></TextBlock>
-                <TextBlock Text="Kết quả" Grid.Row="0" Grid.Column="5"></TextBlock>
-
-            </Grid>
-        </ScrollViewer>
-
-    </Grid>
+                    <TextBlock HorizontalAlignment="Left" Margin="48,123,0,0" TextWrapping="Wrap" Text="NGÀY THI" VerticalAlignment="Top" OpacityMask="#FF1515CF" FontWeight="Bold" FontSize="14" Width="88" Height="24" Foreground="#FF0C4FC5"/>
+                    <TextBox HorizontalAlignment="Left" Height="23" Margin="157,123,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="169"/>
+                    <Button Content="THOÁT" HorizontalAlignment="Left" Margin="48,206,0,0" VerticalAlignment="Top" Width="162" Click="Button_Click_1"  FontWeight="Bold" FontSize="18" Height="79" BorderBrush="#FF7BD6D2" Background="#FF8EEAEA"/>
+                    <ScrollViewer Grid.Column="1" HorizontalAlignment="Left" Height="238" Margin="1,47,0,0" VerticalAlignment="Top" Width="681">
+                        <Grid RenderTransformOrigin="0.508,0.482" Width="681">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="24" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="SBD" Grid.Row="0" Grid.Column="0"></TextBlock>
+                            <TextBlock Text="Họ và tên" Grid.Row="0" Grid.Column="1"></TextBlock>
+                            <TextBlock Text="Ngày sinh" Grid.Row="0" Grid.Column="2"></TextBlock>
+                            <TextBlock Text="Địa chỉ" Grid.Row="0" Grid.Column="3"></TextBlock>
+                            <TextBlock Text="Điểm thi" Grid.Row="0" Grid.Column="4"></TextBlock>
+                            <TextBlock Text="Kết quả" Grid.Row="0" Grid.Column="5"></TextBlock>
+                        </Grid>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
 </Window>
