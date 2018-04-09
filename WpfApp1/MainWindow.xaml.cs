@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Windows.Forms;
-using System.Windows.Forms;
 
 
 namespace WpfApp1
@@ -66,7 +65,7 @@ namespace WpfApp1
                     //nee.mGrade1 = reader.GetFloat(++i);
                     mBoard.vExaminee.Add(nee);
                 }
-                GridShowQryResult();
+                GridShowExaminee(grd1);
             }
         }
        
@@ -83,17 +82,20 @@ namespace WpfApp1
            System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog();
 
             // set filter for file extension and default file extension 
-            dlg.DefaultExt = ".docx";
+            dlg.DefaultExt = ".xlsx";
             dlg.Filter = "spreadsheet (.xlsx;.csv)|*.xlsx;*.csv";
             System.Windows.Forms.DialogResult result = dlg.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK)
-                mBoard.LoadExaminee(dlg.FileName);
+            {
+                mBoard.Load(dlg.FileName);
+                GridShowExaminee(grd2);
+            }
         }
 
         SqlConnection GetDBConnection()
         {
-            string cn = "Data Source=.\\SQLEXPRESS;Initial Catalog=quanlychungchi;Integrated Security=True";
+            string cn = "Data Source=.\\TESTINSTANCE;Initial Catalog=web2store;Integrated Security=True";
             SqlConnection conn = null;
             try
             {
@@ -104,7 +106,7 @@ namespace WpfApp1
             {
                 System.Windows.Forms.MessageBox.Show(ex.ToString(), "SQL connection error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
+                conn = null;
             }
             return conn;
         }
@@ -115,35 +117,7 @@ namespace WpfApp1
             cmd.Connection = GetDBConnection();
             if (cmd.Connection == null)
                 return;
-            cmd.CommandText = "INSERT INTO w2s_board VALUES ('" + tbxDate.Text +
-                "'," + cbxTestType.SelectedIndex + ")";
-         
-            try
-            {
-                cmd.ExecuteNonQuery();
-            }
-            catch(SqlException)
-            {
-                //System.Windows.Forms.MessageBox.Show(ex.ToString(), "SQL cmd error",
-                //    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
- //           board_date DATE,
- //   test_type_id TINYINT,
-	//examinee_index SMALLINT,
- //   name VARCHAR(32),
-	//birth_date DATE,
- //   birth_place VARCHAR(64),
-	//grade_1 FLOAT,
- //   grade_2 FLOAT,
-	//grade_3 FLOAT,
-            StringBuilder qry = new StringBuilder();
-            qry.Append("INSERT INTO w2s_examinee(board_date,test_type_id,examinee_index,name,birth_date,birth_place,grade_1) VALUES ");
-            foreach (Examinee nee in mBoard.vExaminee)
-                qry.Append("('" + tbxDate.Text + "'," + cbxTestType.SelectedIndex +
-                    "," + nee.mIndex + ",'" + nee.mName + "','" + nee.mBirthdate + "','" +
-                    nee.mBirthplace + "'," + nee.mGrade1 + "),");
-            qry.Remove(qry.Length - 1, 1);
-            cmd.CommandText = qry.ToString();
+            cmd.CommandText = mBoard.InsertQry();
 			try
             {
                 cmd.ExecuteNonQuery();
@@ -170,7 +144,7 @@ namespace WpfApp1
             cmd.Connection = GetDBConnection();
             if (cmd.Connection == null)
                 return;
-            cmd.CommandText = "SELECT * FROM w2s_examinee WHERE name LIKE '%" + TextBox1.Text + "%'";
+            cmd.CommandText = "SELECT * FROM w2s_examinee WHERE name LIKE N'%" + TextBox1.Text + "'";
             SqlDataReader reader = null;
             try
             {
@@ -190,40 +164,44 @@ namespace WpfApp1
                     int i = 1;
                     nee.mIndex = reader.GetInt16(++i);
                     nee.mName = reader.GetString(++i);
-                    ++i;
-                    //nee.mBirthdate = reader.GetString(++i);
+                    nee.mBirthdate = reader.GetDateTime(++i);
                     nee.mBirthplace = reader.GetString(++i);
-                    //nee.mGrade1 = reader.GetFloat(++i);
+                    nee.mGrade1 = (float)reader.GetDouble(++i);
                     mBoard.vExaminee.Add(nee);
                 }
-                GridShowQryResult();
+                GridShowExaminee(grd1);
             }
         }
 
-        void GridShowQryResult()
+        void GridShowExaminee(Grid grd)
         {
-            int r = 1;
+            grd.RowDefinitions.Clear();
+            grd.Children.Clear();
+            int r = 0;
             foreach(Examinee nee in mBoard.vExaminee)
             {
-                grd1.RowDefinitions.Add(new RowDefinition());
+                RowDefinition rd = new RowDefinition();
+                rd.Height = new GridLength(20);
+                grd.RowDefinitions.Add(rd);
                 //SBD
                 TextBlock t = new TextBlock();
                 t.Text = nee.mIndex.ToString();
-                grd1.Children.Add(t);
+                grd.Children.Add(t);
                 Grid.SetRow(t, r);
                 Grid.SetColumn(t, 0);
 
                 //Name
                 t = new TextBlock();
                 t.Text = nee.mName;
-                grd1.Children.Add(t);
+                grd.Children.Add(t);
                 Grid.SetRow(t, r);
                 Grid.SetColumn(t, 1);
+                TextBox1.Text = nee.mName;
 
                 //birthplace
                 t = new TextBlock();
                 t.Text = nee.mBirthplace;
-                grd1.Children.Add(t);
+                grd.Children.Add(t);
                 Grid.SetRow(t, r);
                 Grid.SetColumn(t, 3);
 
@@ -273,7 +251,7 @@ namespace WpfApp1
                     //nee.mGrade1 = reader.GetFloat(++i);
                     mBoard.vExaminee.Add(nee);
                 }
-                GridShowQryResult();
+                GridShowExaminee(grd1);
             }
         }
     }

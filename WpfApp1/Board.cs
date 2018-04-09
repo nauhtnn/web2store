@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
@@ -18,19 +19,28 @@ namespace WpfApp1
     }
     public class Board
     {
-        public DateTime mDate { get; set; }
-        public TestType mType { get; set; }
+        DateTime mDate;
+        public string tDate { get { return mDate.ToString(DT._); } }
+        TestType mType;
+        public int iType { get { return (int)mType; } }
         public List<Examinee> vExaminee { get; }
+
         public Board()
         {
             vExaminee = new List<Examinee>();
         }
-        public string LoadExaminee(string filePath)
+
+        public string Load(string filepath)
         {
             vExaminee.Clear();
+
+            if (DT.To_(Path.GetFileNameWithoutExtension(filepath), DT._, out mDate))
+                return "File name must represent test date.";
+
+            string msg = "ok";
             // Open the spreadsheet document for read-only access.
             using (SpreadsheetDocument document =
-                SpreadsheetDocument.Open(filePath, false))
+                SpreadsheetDocument.Open(filepath, false))
             {
                 // Retrieve a reference to the workbook part.
                 WorkbookPart wbPart = document.WorkbookPart;
@@ -43,6 +53,9 @@ namespace WpfApp1
                 if (theSheet == null)
                     return "No sheet";
 
+                if (!TestType.TryParse(theSheet.Name, out mType))
+                    return "Sheet name must represent test type.";
+
                 // Retrieve a reference to the worksheet part.
                 WorksheetPart wsPart =
                     (WorksheetPart)(wbPart.GetPartById(theSheet.Id));
@@ -52,32 +65,55 @@ namespace WpfApp1
                 IEnumerable<Row> vRow = wsPart.Worksheet.Descendants<Row>();
 
                 int li = -1;
-                foreach(Row r in vRow)
+                foreach (Row r in vRow)
                 {
                     ++li;
                     IEnumerable<Cell> cells = r.ChildElements.OfType<Cell>();
                     List<Cell> vCell = cells.ToList();
-                    if(vCell.Count < 5)
-                        return "Line " + li + ": The number of columns is " + vCell.Count;
+                    if (vCell.Count < 5)
+                    {
+                        msg = "Line " + li + ": The number of columns is " + vCell.Count;
+                        break;
+                    }
 
                     Examinee nee = new Examinee();
                     int i = -1;
                     string value = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);
                     if (!nee.TryParseIdx(value))//index
-                        return "Line " + li + ": Attr " + i + " is error";
+                    {
+                        msg = "Line " + li + ": Attr " + i + " is error";
+                        break;
+                    }
                     nee.mName = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);//name
-                    if(!nee.TryParseBirdate(LoadExamineeAttr(vCell.ElementAt(++i), wbPart)))//birthdate
-                        return "Line " + li + ": Attr " + i + " is error";
+                    if (!nee.TryParseBirdate(LoadExamineeAttr(vCell.ElementAt(++i), wbPart)))//birthdate
+                    {
+                        msg = "Line " + li + ": Attr " + i + " is error";
+                        break;
+                    }
                     nee.mBirthplace = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);//birthplace
                     float grade;
-                    if(!float.TryParse(LoadExamineeAttr(vCell.ElementAt(++i), wbPart), out grade))
-                        return "Line " + li + ": Attr " + i + " error";
+                    if (!float.TryParse(LoadExamineeAttr(vCell.ElementAt(++i), wbPart), out grade))
+                    {
+                        msg = "Line " + li + ": Attr " + i + " is error";
+                        break;
+                    }
                     nee.mGrade1 = grade;//grade 1
                     vExaminee.Add(nee);
                 }
             }
+            return msg;
+        }
 
-            return "ok";
+        public string InsertQry()
+        {
+            StringBuilder qry = new StringBuilder();
+            qry.Append("INSERT INTO w2s_examinee(test_date,test_type_id,examinee_index,name,birth_date,birth_place,grade_1) VALUES ");
+            foreach (Examinee nee in vExaminee)
+                qry.Append("('" + tDate + "'," + iType +
+                    "," + nee.mIndex + ",N'" + nee.mName + "','" + nee.mBirthdate.ToString(DT._) + "',N'" +
+                    nee.mBirthplace + "'," + nee.mGrade1 + "),");
+            qry.Remove(qry.Length - 1, 1);
+            return qry.ToString();
         }
 
         string LoadExamineeAttr(Cell cell, WorkbookPart wbPart)

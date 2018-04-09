@@ -9,14 +9,11 @@ namespace WpfApp1
 {
     public class Examinee
     {
-        static CultureInfo sCultInfo = null;
-        public const string FMT_FL = "d/M/yyyy";
-        public const string FMT_DB = "yyyy-MM-dd";
         public int mIndex { get; set; }
         public string mName { get; set; }
         public DateTime mBirthdate;
         public string mBirthplace { get; set; }
-        public float mGrade1 { get; set; }
+        public float mGrade1;
         public float mGrade2 { get; set; }
         public float mGrade3 { get; set; }
         public Examinee() { }
@@ -31,11 +28,9 @@ namespace WpfApp1
 
         public bool TryParseBirdate(string s)
         {
-            if (sCultInfo == null)
-                sCultInfo = CultureInfo.CreateSpecificCulture("en-US");
-            if (DateTime.TryParseExact(s.Substring(1), FMT_FL, sCultInfo, DateTimeStyles.None, out mBirthdate))
-                return true;
-            return false;
+            if (DT.To_(s, DT.RF, out mBirthdate))
+                return false;
+            return true;
         }
     }
 }
