@@ -1,5 +1,5 @@
 ﻿CREATE TABLE w2s_test_type (
-	test_type_id TINYINT IDENTITY(1,1) PRIMARY KEY,
+	test_type_id TINYINT IDENTITY(0,1) PRIMARY KEY,
 	test_type_str CHAR(4),
 );
 INSERT INTO w2s_test_type VALUES ('EN_A'), ('EN_B'), ('EN_C'), ('IT_A'), ('IT_B');
@@ -9,7 +9,7 @@ CREATE TABLE w2s_board (
 	PRIMARY KEY(board_date, test_type_id),
 	FOREIGN KEY(test_type_id) REFERENCES w2s_test_type(test_type_id)
 );
-INSERT INTO w2s_board VALUES ('2017-11-12',1), ('2017-12-17',1), ('2018-01-28',1);
+--INSERT INTO w2s_board VALUES ('2017-11-12',1), ('2017-12-17',1), ('2018-01-28',1);
 CREATE TABLE w2s_examinee (
 	board_date DATE,
 	test_type_id TINYINT,

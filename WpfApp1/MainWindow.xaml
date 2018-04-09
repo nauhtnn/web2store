@@ -39,7 +39,13 @@
                             <TextBlock Text="Kết quả" Grid.Row="0" Grid.Column="5"/>
                         </Grid>
                     </ScrollViewer>
-                    <ComboBox x:Name="cbxTestType" HorizontalAlignment="Left" Height="25" Margin="450,0,0,0" VerticalAlignment="Top" Width="143"/>
+                    <ComboBox x:Name="cbxTestType" HorizontalAlignment="Left" Height="25" Margin="450,0,0,0" VerticalAlignment="Top" Width="143">
+                        <ComboBoxItem>Tiếng Anh A</ComboBoxItem>
+                        <ComboBoxItem>Tiếng Anh B</ComboBoxItem>
+                        <ComboBoxItem>Tiếng Anh C</ComboBoxItem>
+                        <ComboBoxItem>Tin học A</ComboBoxItem>
+                        <ComboBoxItem>Tin học B</ComboBoxItem>
+                    </ComboBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Thí sinh">

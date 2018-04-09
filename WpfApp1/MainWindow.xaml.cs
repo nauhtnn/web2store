@@ -45,7 +45,8 @@ namespace WpfApp1
 
         private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog();
+            
+           System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog();
 
             // set filter for file extension and default file extension 
             dlg.DefaultExt = ".docx";
@@ -58,7 +59,7 @@ namespace WpfApp1
 
         private void btnImport_Click(object sender, RoutedEventArgs e)
         {
-            string cn = "Data Source=.\\testinstance;Initial Catalog=web2store;Integrated Security=True";
+            string cn = "Data Source=.\\SQLEXPRESS;Initial Catalog=quanlychungchi;Integrated Security=True";
             SqlConnection conn = null;
             try
             {
@@ -73,9 +74,36 @@ namespace WpfApp1
             }
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = "INSERT INTO w2s_board VALUES (" + tbxDate.Text +
-                "," + cbxTestType.SelectedIndex + ")";
+            cmd.CommandText = "INSERT INTO w2s_board VALUES ('" + tbxDate.Text +
+                "'," + cbxTestType.SelectedIndex + ")";
+         
             try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch(SqlException ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.ToString(), "SQL cmd error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+ //           board_date DATE,
+ //   test_type_id TINYINT,
+	//examinee_index SMALLINT,
+ //   name VARCHAR(32),
+	//birth_date DATE,
+ //   birth_place VARCHAR(64),
+	//grade_1 FLOAT,
+ //   grade_2 FLOAT,
+	//grade_3 FLOAT,
+            StringBuilder qry = new StringBuilder();
+            qry.Append("INSERT INTO w2s_examinee(board_date,test_type_id,examinee_index,name,birth_date,birth_place,grade_1) VALUES ");
+            foreach (Examinee nee in mBoard.vExaminee)
+                qry.Append("('" + tbxDate.Text + "'," + cbxTestType.SelectedIndex +
+                    "," + nee.mIndex + ",'" + nee.mName + "','" + nee.mBirthdate + "','" +
+                    nee.mBirthplace + "'," + nee.mGrade1 + "),");
+            qry.Remove(qry.Length - 1, 1);
+            cmd.CommandText = qry.ToString();
+			try
             {
                 cmd.ExecuteNonQuery();
             }
@@ -85,12 +113,6 @@ namespace WpfApp1
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            //StringBuilder qry = new StringBuilder();
-            //qry.Append("INSERT INTO w2s_examinee VALUES (");
-            //foreach (Examinee nee in mBoard.vExaminee)
-            //    qry.Append(tbxDate.Text + "," + cbxTestType.SelectedIndex +
-            //        "," + nee.min);
-            //cmd.CommandText = qry.ToString();
         }
 
         private void Main_Loaded(object sender, RoutedEventArgs e)
