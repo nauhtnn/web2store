@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Windows.Forms;
+
 
 namespace WpfApp1
 {
@@ -28,16 +30,51 @@ namespace WpfApp1
             InitializeComponent();
         }
 
-        
 
+        //Tim theo họ
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            grd1.Children.Clear();
+            mBoard.vExaminee.Clear();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = GetDBConnection();
+            if (cmd.Connection == null)
+                return;
+            cmd.CommandText = "SELECT * FROM w2s_examinee WHERE name LIKE '%" + TextBox1.Text + "'";
+            SqlDataReader reader = null;
+            try
+            {
+                reader = cmd.ExecuteReader();
+            }
+            catch (SqlException ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.ToString(), "SQL cmd error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (reader != null && reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Examinee nee = new Examinee();
+                    int i = 1;
+                    nee.mIndex = reader.GetInt16(++i);
+                    nee.mName = reader.GetString(++i);
+                    ++i;
+                    //nee.mBirthdate = reader.GetString(++i);
+                    nee.mBirthplace = reader.GetString(++i);
+                    //nee.mGrade1 = reader.GetFloat(++i);
+                    mBoard.vExaminee.Add(nee);
+                }
+                GridShowQryResult();
+            }
         }
-        //Tim theo họ
+       
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
+            System.Windows.Forms.MessageBox.Show("Bạn có chắc muốn thoát không?",
+                "THÔNG BÁO", MessageBoxButtons.YesNoCancel);
+            System.Windows.Application.Current.Shutdown();
         }
 
         private void btnLoad_Click(object sender, RoutedEventArgs e)
@@ -85,10 +122,10 @@ namespace WpfApp1
             {
                 cmd.ExecuteNonQuery();
             }
-            catch(SqlException ex)
+            catch(SqlException)
             {
-                System.Windows.Forms.MessageBox.Show(ex.ToString(), "SQL cmd error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //System.Windows.Forms.MessageBox.Show(ex.ToString(), "SQL cmd error",
+                //    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
  //           board_date DATE,
  //   test_type_id TINYINT,
@@ -124,15 +161,16 @@ namespace WpfApp1
             mBoard = new Board();
         }
 
+        //tim theo ten gan dung
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-           
+            grd1.Children.Clear();
             mBoard.vExaminee.Clear();
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = GetDBConnection();
             if (cmd.Connection == null)
                 return;
-            cmd.CommandText = "SELECT * FROM w2s_examinee WHERE name LIKE '%" + TextBox1.Text + "'";
+            cmd.CommandText = "SELECT * FROM w2s_examinee WHERE name LIKE '%" + TextBox1.Text + "%'";
             SqlDataReader reader = null;
             try
             {
@@ -199,5 +237,45 @@ namespace WpfApp1
 
 
         }
+
+        //tim theo ten chinh xac
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            grd1.Children.Clear();
+            mBoard.vExaminee.Clear();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = GetDBConnection();
+            if (cmd.Connection == null)
+                return;
+            cmd.CommandText = "SELECT * FROM w2s_examinee WHERE name LIKE '%" + TextBox1.Text + "'";
+            SqlDataReader reader = null;
+            try
+            {
+                reader = cmd.ExecuteReader();
+            }
+            catch (SqlException ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.ToString(), "SQL cmd error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (reader != null && reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Examinee nee = new Examinee();
+                    int i = 1;
+                    nee.mIndex = reader.GetInt16(++i);
+                    nee.mName = reader.GetString(++i);
+                    ++i;
+                    //nee.mBirthdate = reader.GetString(++i);
+                    nee.mBirthplace = reader.GetString(++i);
+                    //nee.mGrade1 = reader.GetFloat(++i);
+                    mBoard.vExaminee.Add(nee);
+                }
+                GridShowQryResult();
+            }
+        }
     }
+    
 }

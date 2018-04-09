@@ -60,11 +60,11 @@
                     <TextBox x:Name="TextBox1" HorizontalAlignment="Left" Height="23" Margin="157,79,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="169" TextChanged="TextBox1_TextChanged"/>
                     <Button Content="TÌM KIẾM THEO TÊN" Click="Button_Click_2" HorizontalAlignment="Left" Margin="48,325,0,0" VerticalAlignment="Top" Width="162" FontWeight="Bold" Height="73" FontSize="14" Background="#FF6EDFE4" Foreground="#FFDA14D1"/>
                     <Button Content="TÌM KIẾM THEO HỌ" HorizontalAlignment="Left" Margin="283,325,0,0" VerticalAlignment="Top" Width="162" FontWeight="Bold" Height="73" Click="Button_Click"  FontSize="14" Background="#FF8EE6EA" Foreground="#FFCB34C4" Grid.ColumnSpan="2"/>
-                    <Button Content="TÌM KIẾM THEO NGÀY THI" HorizontalAlignment="Left" Margin="102,325,0,0" VerticalAlignment="Top" Width="196" FontWeight="Bold" Height="73" FontSize="14" Background="#FF64E7EE" Foreground="#FFB21DAB" Grid.Column="1"/>
+                    <Button Content="TÌM KIẾM THEO NGÀY THI" HorizontalAlignment="Left" Margin="102,325,0,0" VerticalAlignment="Top" Width="196" FontWeight="Bold" Height="73" FontSize="14" Background="#FF64E7EE" Foreground="#FFB21DAB" Grid.Column="1" Click="Button_Click_3"/>
                     <Button Content="TÌM TÊN VỚI TÊN CHÍNH XÁC" HorizontalAlignment="Left" Margin="373,325,0,0" VerticalAlignment="Top" Width="251" Height="73" FontSize="14
-                " FontWeight="Bold" Background="#FF76E1E6" Foreground="#FFAE13A7" Grid.Column="1"/>
+                " FontWeight="Bold" Background="#FF76E1E6" Foreground="#FFAE13A7" Grid.Column="1" Click="Button_Click_3"/>
                     <TextBlock HorizontalAlignment="Left" Margin="48,123,0,0" TextWrapping="Wrap" Text="NGÀY THI" VerticalAlignment="Top" OpacityMask="#FF1515CF" FontWeight="Bold" FontSize="14" Width="88" Height="24" Foreground="#FF0C4FC5"/>
-                    <TextBox HorizontalAlignment="Left" Height="23" Margin="157,123,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="169"/>
+                    <TextBox x:Name="TextBox2" HorizontalAlignment="Left" Height="23" Margin="157,123,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="169"/>
                     <Button Content="THOÁT" HorizontalAlignment="Left" Margin="48,206,0,0" VerticalAlignment="Top" Width="162" Click="Button_Click_1"  FontWeight="Bold" FontSize="18" Height="79" BorderBrush="#FF7BD6D2" Background="#FF8EEAEA"/>
                     <ScrollViewer Grid.Column="1" HorizontalAlignment="Left" Height="238" Margin="1,47,0,0" VerticalAlignment="Top" Width="681">
                         <Grid x:Name="grd1" RenderTransformOrigin="0.508,0.482" Width="681">

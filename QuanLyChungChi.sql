@@ -1,4 +1,5 @@
-﻿CREATE TABLE w2s_test_type (
+﻿--ALTER DATABASE your_db_name COLLATE Vietnamese_CI_AS
+CREATE TABLE w2s_test_type (
 	test_type_id TINYINT IDENTITY(0,1) PRIMARY KEY,
 	test_type_str CHAR(4),
 );
@@ -14,9 +15,9 @@ CREATE TABLE w2s_examinee (
 	board_date DATE,
 	test_type_id TINYINT,
 	examinee_index SMALLINT,
-	name VARCHAR(32),
+	name NVARCHAR(32) COLLATE Vietnamese_CI_AS,
 	birth_date DATE,
-	birth_place VARCHAR(64),
+	birth_place NVARCHAR(64),
 	grade_1 FLOAT,
 	grade_2 FLOAT,
 	grade_3 FLOAT,
