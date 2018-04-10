@@ -28,46 +28,6 @@ namespace WpfApp1
         {
             InitializeComponent();
         }
-
-
-        //Tim theo họ
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            grd1.Children.Clear();
-            mBoard.vExaminee.Clear();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = GetDBConnection();
-            if (cmd.Connection == null)
-                return;
-            cmd.CommandText = "SELECT * FROM w2s_examinee WHERE name LIKE '%" + TextBox1.Text + "'";
-            SqlDataReader reader = null;
-            try
-            {
-                reader = cmd.ExecuteReader();
-            }
-            catch (SqlException ex)
-            {
-                System.Windows.Forms.MessageBox.Show(ex.ToString(), "SQL cmd error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if (reader != null && reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    Examinee nee = new Examinee();
-                    int i = 1;
-                    nee.mIndex = reader.GetInt16(++i);
-                    nee.mName = reader.GetString(++i);
-                    ++i;
-                    //nee.mBirthdate = reader.GetString(++i);
-                    nee.mBirthplace = reader.GetString(++i);
-                    //nee.mGrade1 = reader.GetFloat(++i);
-                    mBoard.vExaminee.Add(nee);
-                }
-                GridShowExaminee(grd1);
-            }
-        }
        
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -88,7 +48,9 @@ namespace WpfApp1
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                mBoard.Load(dlg.FileName);
+                string s = mBoard.Load(dlg.FileName);
+                if(s != "ok")
+                    System.Windows.MessageBox.Show(s, "SQL cmd error");
                 GridShowExaminee(grd2);
             }
         }
@@ -104,8 +66,7 @@ namespace WpfApp1
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show(ex.ToString(), "SQL connection error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.MessageBox.Show(ex.ToString(), "SQL connection error");
                 conn = null;
             }
             return conn;
@@ -124,8 +85,7 @@ namespace WpfApp1
             }
             catch(SqlException ex)
             {
-                System.Windows.Forms.MessageBox.Show(ex.ToString(), "SQL cmd error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.MessageBox.Show(ex.ToString(), "SQL cmd error");
                 return;
             }
         }
@@ -135,8 +95,7 @@ namespace WpfApp1
             mBoard = new Board();
         }
 
-        //tim theo ten gan dung
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void SearchName(string qry)
         {
             grd1.Children.Clear();
             mBoard.vExaminee.Clear();
@@ -144,7 +103,7 @@ namespace WpfApp1
             cmd.Connection = GetDBConnection();
             if (cmd.Connection == null)
                 return;
-            cmd.CommandText = "SELECT * FROM w2s_examinee WHERE name LIKE N'%" + TextBox1.Text + "'";
+            cmd.CommandText = qry;
             SqlDataReader reader = null;
             try
             {
@@ -152,8 +111,7 @@ namespace WpfApp1
             }
             catch (SqlException ex)
             {
-                System.Windows.Forms.MessageBox.Show(ex.ToString(), "SQL cmd error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.MessageBox.Show(ex.ToString(), "SQL cmd error");
                 return;
             }
             if (reader != null && reader.HasRows)
@@ -173,6 +131,36 @@ namespace WpfApp1
             }
         }
 
+        //approximate name
+        private void btn_ApproxName(object sender, RoutedEventArgs e)
+        {
+            SearchName("SELECT * FROM w2s_examinee WHERE name LIKE N'%" + TextBox1.Text + "'");//todo
+        }
+
+        //exact name
+        private void btn_ExactName(object sender, RoutedEventArgs e)
+        {
+            //todo
+        }
+
+        //prefix name
+        private void btn_PrefixName(object sender, RoutedEventArgs e)
+        {
+            SearchName("SELECT * FROM w2s_examinee WHERE name LIKE N'%" + TextBox1.Text + "'");//todo LIKE or =
+        }
+
+        //postfix name
+        private void btn_SuffixName(object sender, RoutedEventArgs e)
+        {
+            //todo
+        }
+
+        //test date
+        private void btn_TestDate(object sender, RoutedEventArgs e)
+        {
+            SearchName("SELECT * FROM w2s_examinee WHERE test_date='" + TextBox2.Text + "'");
+        }
+
         void GridShowExaminee(Grid grd)
         {
             grd.RowDefinitions.Clear();
@@ -183,7 +171,7 @@ namespace WpfApp1
                 RowDefinition rd = new RowDefinition();
                 rd.Height = new GridLength(20);
                 grd.RowDefinitions.Add(rd);
-                //SBD
+                //examinee ID
                 TextBlock t = new TextBlock();
                 t.Text = nee.mIndex.ToString();
                 grd.Children.Add(t);
@@ -198,6 +186,14 @@ namespace WpfApp1
                 Grid.SetColumn(t, 1);
                 TextBox1.Text = nee.mName;
 
+                //birthdate
+                t = new TextBlock();
+                t.Text = nee.mBirthdate.ToString(DT.RF);
+                grd.Children.Add(t);
+                Grid.SetRow(t, r);
+                Grid.SetColumn(t, 2);
+                TextBox1.Text = nee.mName;
+
                 //birthplace
                 t = new TextBlock();
                 t.Text = nee.mBirthplace;
@@ -205,55 +201,16 @@ namespace WpfApp1
                 Grid.SetRow(t, r);
                 Grid.SetColumn(t, 3);
 
+                //grade1
+                t = new TextBlock();
+                t.Text = nee.mGrade1.ToString();
+                grd.Children.Add(t);
+                Grid.SetRow(t, r);
+                Grid.SetColumn(t, 4);
+
                 //
                 ++r;
             }
         }
-        private void TextBox1_TextChanged(object sender, TextChangedEventArgs e)
-        {
-           
-
-
-        }
-
-        //tim theo ten chinh xac
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            grd1.Children.Clear();
-            mBoard.vExaminee.Clear();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = GetDBConnection();
-            if (cmd.Connection == null)
-                return;
-            cmd.CommandText = "SELECT * FROM w2s_examinee WHERE name LIKE '%" + TextBox1.Text + "'";
-            SqlDataReader reader = null;
-            try
-            {
-                reader = cmd.ExecuteReader();
-            }
-            catch (SqlException ex)
-            {
-                System.Windows.Forms.MessageBox.Show(ex.ToString(), "SQL cmd error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if (reader != null && reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    Examinee nee = new Examinee();
-                    int i = 1;
-                    nee.mIndex = reader.GetInt16(++i);
-                    nee.mName = reader.GetString(++i);
-                    ++i;
-                    //nee.mBirthdate = reader.GetString(++i);
-                    nee.mBirthplace = reader.GetString(++i);
-                    //nee.mGrade1 = reader.GetFloat(++i);
-                    mBoard.vExaminee.Add(nee);
-                }
-                GridShowExaminee(grd1);
-            }
-        }
     }
-    
 }

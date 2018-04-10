@@ -34,8 +34,11 @@ namespace WpfApp1
         {
             vExaminee.Clear();
 
-            if (DT.To_(Path.GetFileNameWithoutExtension(filepath), DT._, out mDate))
-                return "File name must represent test date.";
+            string fn = Path.GetFileNameWithoutExtension(filepath);
+            //todo check fn for length
+
+            if (DT.To_(fn.Substring(0, 10), DT._, out mDate))
+                return "File name must represent test date in format yyyy-MM-dd.";
 
             string msg = "ok";
             // Open the spreadsheet document for read-only access.
@@ -78,26 +81,38 @@ namespace WpfApp1
 
                     Examinee nee = new Examinee();
                     int i = -1;
+                    //index
                     string value = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);
-                    if (!nee.TryParseIdx(value))//index
+                    if (!nee.TryParseIdx(value))
                     {
                         msg = "Line " + li + ": Attr " + i + " is error";
                         break;
                     }
-                    nee.mName = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);//name
-                    if (!nee.TryParseBirdate(LoadExamineeAttr(vCell.ElementAt(++i), wbPart)))//birthdate
+                    //name
+                    nee.mName = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);
+                    //birthdate
+                    value = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);
+                    int v;
+                    if(int.TryParse(value, out v))
+                    {
+                        nee.mBirthdate = DateTime.FromOADate(v);
+                    }
+                    else if (!nee.TryParseBirdate(value))
                     {
                         msg = "Line " + li + ": Attr " + i + " is error";
                         break;
                     }
-                    nee.mBirthplace = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);//birthplace
+                    //birthplace
+                    nee.mBirthplace = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);
+                    //grade 1
                     float grade;
                     if (!float.TryParse(LoadExamineeAttr(vCell.ElementAt(++i), wbPart), out grade))
                     {
                         msg = "Line " + li + ": Attr " + i + " is error";
                         break;
                     }
-                    nee.mGrade1 = grade;//grade 1
+                    nee.mGrade1 = grade;
+
                     vExaminee.Add(nee);
                 }
             }
