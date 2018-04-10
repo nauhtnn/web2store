@@ -15,18 +15,29 @@ namespace WpfApp1
         EN_B,
         EN_C,
         IT_A,
-        IT_B
+        IT_B,
     }
+
+    public enum TestFormat
+    {
+        IT_1 = 2008,
+        IT_2,
+    }
+
     public class Board
     {
         DateTime mDate;
         public string tDate { get { return mDate.ToString(DT._); } }
         TestType mType;
         public int iType { get { return (int)mType; } }
+        TestFormat mFormat;
         public List<Examinee> vExaminee { get; }
 
         public Board()
         {
+            mDate = new DateTime(1, 1, 1);
+            mType = TestType.IT_A;
+            mFormat = TestFormat.IT_2;
             vExaminee = new List<Examinee>();
         }
 
@@ -39,6 +50,10 @@ namespace WpfApp1
 
             if (DT.To_(fn.Substring(0, 10), DT._, out mDate))
                 return "File name must represent test date in format yyyy-MM-dd.";
+            if ((int)TestFormat.IT_1 < mDate.Year)
+                mFormat = TestFormat.IT_2;
+            else
+                mFormat = TestFormat.IT_1;
 
             string msg = "ok";
             // Open the spreadsheet document for read-only access.
@@ -56,7 +71,7 @@ namespace WpfApp1
                 if (theSheet == null)
                     return "No sheet";
 
-                if (!TestType.TryParse(theSheet.Name, out mType))
+                if (!TestType.TryParse(theSheet.Name.ToString().Substring(0, 4), out mType))
                     return "Sheet name must represent test type.";
 
                 // Retrieve a reference to the worksheet part.
@@ -67,15 +82,37 @@ namespace WpfApp1
                 // whose address matches the address you supplied.
                 IEnumerable<Row> vRow = wsPart.Worksheet.Descendants<Row>();
 
+                if (vRow.Count() < 1)
+                    return "No row.";
+
+                //birthdate or given name
+                bool bName = true;
+                string v = LoadExamineeAttr(vRow.First().ChildElements.ElementAt(2) as Cell, wbPart);
+                foreach (char c in v.ToCharArray())
+                    if ('0' <= c && c <= '9')
+                    {
+                        bName = false;
+                        break;
+                    }
+
+                //determine the number of cells of each row
+                int nCellOfRow = 5;
+                if (bName)
+                    ++nCellOfRow;
+                if (mType < TestType.IT_A)
+                    nCellOfRow += 2;
+                else if (mFormat == TestFormat.IT_2)
+                    ++nCellOfRow;
+
                 int li = -1;
                 foreach (Row r in vRow)
                 {
                     ++li;
                     IEnumerable<Cell> cells = r.ChildElements.OfType<Cell>();
                     List<Cell> vCell = cells.ToList();
-                    if (vCell.Count < 5)
+                    if ( vCell.Count < nCellOfRow)
                     {
-                        msg = "Line " + li + ": The number of columns is " + vCell.Count;
+                        msg = "Line " + li + ": The number of columns is " + vCell.Count + " < " + nCellOfRow;
                         break;
                     }
 
@@ -88,30 +125,81 @@ namespace WpfApp1
                         msg = "Line " + li + ": Attr " + i + " is error";
                         break;
                     }
+
                     //name
                     nee.mName = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);
+
+                    //given name
+                    if(bName)
+                        nee.mName += LoadExamineeAttr(vCell.ElementAt(++i), wbPart);
+
                     //birthdate
                     value = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);
-                    int v;
-                    if(int.TryParse(value, out v))
+                    int val;
+                    if(int.TryParse(value, out val))//birthdate is stored as number
                     {
-                        nee.mBirthdate = DateTime.FromOADate(v);
+                        if (val < 2018)//birthyear only
+                            nee.mBirthdate = new DateTime(val, 1, 1, 8, 8, 8);
+                        else
+                            nee.mBirthdate = DateTime.FromOADate(val);
                     }
-                    else if (!nee.TryParseBirdate(value))
+                    else if (!nee.TryParseBirdate(value))//birthdate is stored as string
                     {
                         msg = "Line " + li + ": Attr " + i + " is error";
                         break;
                     }
+
                     //birthplace
                     nee.mBirthplace = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);
+
                     //grade 1
                     float grade;
-                    if (!float.TryParse(LoadExamineeAttr(vCell.ElementAt(++i), wbPart), out grade))
+                    value = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);
+                    if (!float.TryParse(value, out grade))
                     {
-                        msg = "Line " + li + ": Attr " + i + " is error";
-                        break;
+                        if (value.ToLower().Trim() == "v")
+                            grade = -1.0f;
+                        else
+                        {
+                            msg = "Line " + li + ": Attr " + i + " is error";
+                            break;
+                        }
                     }
                     nee.mGrade1 = grade;
+
+                    if (mType < TestType.IT_A || mFormat == TestFormat.IT_2)
+                    {
+                        //grade 2
+                        value = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);
+                        if (!float.TryParse(value, out grade))
+                        {
+                            if (value.ToLower().Trim() == "v")
+                                grade = -1.0f;
+                            else
+                            {
+                                msg = "Line " + li + ": Attr " + i + " is error";
+                                break;
+                            }
+                        }
+                        nee.mGrade2 = grade;
+                    }
+
+                    if(mType < TestType.IT_A)
+                    {
+                        //grade 3
+                        value = LoadExamineeAttr(vCell.ElementAt(++i), wbPart);
+                        if (!float.TryParse(value, out grade))
+                        {
+                            if (value.ToLower().Trim() == "v")
+                                grade = -1.0f;
+                            else
+                            {
+                                msg = "Line " + li + ": Attr " + i + " is error";
+                                break;
+                            }
+                        }
+                        nee.mGrade3 = grade;
+                    }
 
                     vExaminee.Add(nee);
                 }
