@@ -7,12 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="480" Width="1142" FontFamily="Times New Roman">
     <StackPanel Loaded="Main_Loaded">
-        <TabControl SelectedIndex="1" Height="496">
+        <TabControl SelectedIndex="1" Height="451" SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="Nhân viên">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name="btnLoad" Click="btnLoad_Click" Content="Load" Height="32" Width="64"/>
                         <Button x:Name="btnImport" Click="btnImport_Click" Content="Nhập CSDL" Height="32" Width="64"/>
+                        <Button x:Name="btnExit" Click="btnExit_Click" Content="Thoát" Height="32" Width="64"/>
                     </StackPanel>
                     <Grid Width="600" HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
@@ -54,26 +55,26 @@
                         <ColumnDefinition Width="761*"/>
                         <ColumnDefinition Width="0*"/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Grid.ColumnSpan="2" Header="" HorizontalAlignment="Left" Height="222" Margin="15,184,0,0" VerticalAlignment="Top" Width="633"/>
+                    <GroupBox Grid.ColumnSpan="2" Header="" HorizontalAlignment="Left" Height="222" Margin="15,184,0,0"   VerticalAlignment="Top" Width="633"/>
                     <TextBlock HorizontalAlignment="Stretch" Margin="257,3,184,0" TextWrapping="Wrap" Text="TRUNG TÂM NGOẠI NGỮ - TIN HỌC LONG AN" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="30" Foreground="#FFF31515" Height="38" Grid.ColumnSpan="2" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Margin="48,101,0,0" TextWrapping="Wrap" Text="HỌ VÀ TÊN" VerticalAlignment="Top" Height="23" FontWeight="Bold" FontSize="16" Foreground="#FF0849B9" Width="98"/>
-                    <TextBox x:Name="TextBox1" HorizontalAlignment="Left" Height="23" Margin="157,101,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="169" Foreground="#FFFF005D" TextChanged="TextBox1_TextChanged" />
-                    <Button Content="Họ"  Click="btn_SuffixName" HorizontalAlignment="Left" Margin="345,210,0,0" VerticalAlignment="Top" Width="230" FontWeight="Bold" Height="73" FontSize="14" Background="#FF6EDFE4" Foreground="#FFDA14D1" Grid.ColumnSpan="2"/>
-                    <Button Content="Tên" Click="btn_PrefixName" HorizontalAlignment="Left" Margin="66,210,0,0" VerticalAlignment="Top" Width="225" FontWeight="Bold" Height="73" FontSize="14" Background="#FF8EE6EA" Foreground="#FFCB34C4"/>
-                    <Button Content="Ngày thi" HorizontalAlignment="Left" Margin="345,298,0,0" VerticalAlignment="Top" Width="230" FontWeight="Bold" Height="73" FontSize="14" Background="#FF64E7EE" Foreground="#FFB21DAB" Click="btn_TestDate" Grid.ColumnSpan="2"/>
-                    <Button Content="Họ tên"  Click="btn_ExactName" HorizontalAlignment="Left" Margin="66,298,0,0" VerticalAlignment="Top" Width="225" Height="73" FontSize="14" FontWeight="Bold" Background="#FF76E1E6" Foreground="#FFAE13A7" />
+                    <TextBox x:Name="TextBox1" HorizontalAlignment="Left" Height="32" Margin="157,92,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="212" Foreground="#FFFF005D" TextChanged="TextBox1_TextChanged" FontSize="20" FontWeight="Bold" BorderBrush="Black" />
+                    <Button Content="Họ"  Click="btn_SuffixName" HorizontalAlignment="Left" Margin="345,210,0,0" VerticalAlignment="Top" Width="230" FontWeight="Bold" Height="73" FontSize="30" Background="#FF6EDFE4" Foreground="#FFDA14D1" Grid.ColumnSpan="2"/>
+                    <Button Content="Tên" Click="btn_PrefixName" HorizontalAlignment="Left" Margin="66,210,0,0" VerticalAlignment="Top" Width="225" FontWeight="Bold" Height="73" FontSize="30" Background="#FF8EE6EA" Foreground="#FFCB34C4"/>
+                    <Button Content="Ngày thi" HorizontalAlignment="Left" Margin="345,298,0,0" VerticalAlignment="Top" Width="230" FontWeight="Bold" Height="73" FontSize="30" Background="#FF64E7EE" Foreground="#FFB21DAB" Click="btn_TestDate" Grid.ColumnSpan="2"/>
+                    <Button Content="Họ tên"  Click="btn_ExactName" HorizontalAlignment="Left" Margin="66,298,0,0" VerticalAlignment="Top" Width="225" Height="73" FontSize="30" FontWeight="Bold" Background="#FF76E1E6" Foreground="#FFAE13A7" />
                     <TextBlock HorizontalAlignment="Left" Margin="48,145,0,0" TextWrapping="Wrap" Text="NGÀY THI" VerticalAlignment="Top" OpacityMask="#FF1515CF" FontWeight="Bold" FontSize="14" Width="88" Height="24" Foreground="#FF0C4FC5"/>
-                    <TextBox x:Name="TextBox2" HorizontalAlignment="Left" Height="23" Margin="157,145,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="169" Foreground="#FFFF005D"/>
+
                     <Button Content="THOÁT" HorizontalAlignment="Left" Margin="541,210,0,0" VerticalAlignment="Top" Width="119" Click="Button_Click_1"  FontWeight="Bold" FontSize="18" Height="46" BorderBrush="#FF7BD6D2" Background="#FF8EEAEA" Grid.Column="1"/>
-                    <ScrollViewer Grid.Column="1" HorizontalAlignment="Left" Height="104" Margin="1,101,0,0" VerticalAlignment="Top" Width="681">
-                        <Grid x:Name="grd1" RenderTransformOrigin="0.508,0.482" Width="681" Height="167">
+                    <ScrollViewer Grid.Column="1" HorizontalAlignment="Left" Height="104" Margin="10,92,0,0" VerticalAlignment="Top" Width="681" FontSize="15">
+                        <Grid x:Name="grd1" RenderTransformOrigin="0.508,0.482" Width="681">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="50*" />
+                                <ColumnDefinition Width="191*" />
+                                <ColumnDefinition Width="126*" />
+                                <ColumnDefinition Width="138*" />
+                                <ColumnDefinition Width="63*" />
+                                <ColumnDefinition Width="113*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="24" />
@@ -82,14 +83,23 @@
                         </Grid>
                     </ScrollViewer>
                     <TextBlock HorizontalAlignment="Left" Height="33" Margin="0,68,0,0" TextWrapping="Wrap" Text="SBD" VerticalAlignment="Top" Width="88" Grid.Column="1" Foreground="#FF000AE0" FontWeight="Bold" FontSize="20"/>
-                    <TextBlock HorizontalAlignment="Left" Height="33" Margin="118,68,0,0" TextWrapping="Wrap" Text="Họ và tên" VerticalAlignment="Top" Width="88" Grid.Column="1" Foreground="#FF000AE0" FontWeight="Bold" FontSize="20"/>
-                    <TextBlock HorizontalAlignment="Left" Height="33" Margin="230,68,0,0" TextWrapping="Wrap" Text="Ngày sinh" VerticalAlignment="Top" Width="88" Grid.Column="1" Foreground="#FF000AE0" FontWeight="Bold" FontSize="20"/>
-                    <TextBlock HorizontalAlignment="Left" Height="33" Margin="345,68,0,0" TextWrapping="Wrap" Text="Địa chỉ" VerticalAlignment="Top" Width="88" Grid.Column="1" Foreground="#FF000AE0" FontWeight="Bold" FontSize="20"/>
-                    <TextBlock HorizontalAlignment="Left" Height="33" Margin="457,68,0,0" TextWrapping="Wrap" Text="Điểm thi" VerticalAlignment="Top" Width="88" Grid.Column="1" Foreground="#FF000AE0" FontSize="20" FontWeight="Bold"/>
+                    <TextBlock HorizontalAlignment="Left" Height="33" Margin="71,68,0,0" TextWrapping="Wrap" Text="Họ và tên" VerticalAlignment="Top" Width="88" Grid.Column="1" Foreground="#FF000AE0" FontWeight="Bold" FontSize="20"/>
+                    <TextBlock HorizontalAlignment="Left" Height="33" Margin="245,68,0,0" TextWrapping="Wrap" Text="Ngày sinh" VerticalAlignment="Top" Width="88" Grid.Column="1" Foreground="#FF000AE0" FontWeight="Bold" FontSize="20"/>
+                    <TextBlock HorizontalAlignment="Left" Height="33" Margin="381,68,0,0" TextWrapping="Wrap" Text="Địa chỉ" VerticalAlignment="Top" Width="88" Grid.Column="1" Foreground="#FF000AE0" FontWeight="Bold" FontSize="20"/>
+                    <TextBlock HorizontalAlignment="Left" Height="33" Margin="489,68,0,0" TextWrapping="Wrap" Text="Điểm thi" VerticalAlignment="Top" Width="88" Grid.Column="1" Foreground="#FF000AE0" FontSize="20" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Height="33" Margin="572,68,0,0" TextWrapping="Wrap" Text="Kết quả" VerticalAlignment="Top" Width="88" Grid.Column="1" Foreground="#FF000AE0" FontSize="20" FontWeight="Bold"/>
+                    <ComboBox x:Name="Combobox1"  HorizontalAlignment="Left" Height="30" Margin="157,139,0,0" VerticalAlignment="Top" Width="212" IsEditable="True" Foreground="#FFEC0000" BorderBrush="#FFEC0000" Background="Black" FontSize="20" FontWeight="Bold">
+                        <ComboBoxItem>2008-09-07</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">2008-10-05</ComboBoxItem>
+                        <ComboBoxItem>2008-11-16</ComboBoxItem>
+                        <ComboBoxItem>2008-11-30</ComboBoxItem>
+                        <ComboBoxItem>2008-12-14</ComboBoxItem>
+
+                    </ComboBox>
+
                 </Grid>
             </TabItem>
-            <TextBox Height="44" TextWrapping="Wrap" Text="TextBox" Width="156"/>
+
         </TabControl>
     </StackPanel>
 </Window>

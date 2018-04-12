@@ -31,21 +31,23 @@ namespace WpfApp1
        
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            /*DialogResult h = System.Windows.Forms.MessageBox.Show("Bạn co` muốn thoát ?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
-            if (h == DialogResult.Yes)
+            DialogResult h = System.Windows.Forms.MessageBox.Show("Bạn có muốn thoát không! ", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+            if (h == System.Windows.Forms.DialogResult.Yes)
             {
+                this.Close();
                 System.Windows.Forms.Application.Exit();
             }
             else
             {
-               e.Cancel = true;
-            }*/
-            this.Close();
+               e.Handled = true;
+            }
+            
         }
         
         private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
-            
+
+           
            System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog();
 
             // set filter for file extension and default file extension 
@@ -62,6 +64,7 @@ namespace WpfApp1
                     System.Windows.MessageBox.Show(s, "SQL cmd error");
                 GridShowExaminee(grd2);
             }
+            
         }
 
         SqlConnection GetDBConnection()
@@ -150,7 +153,7 @@ namespace WpfApp1
         //exact name-- tim theo ho ten chinh xac --- ok
         private void btn_ExactName(object sender, RoutedEventArgs e)
         {
-            SearchName("SELECT * FROM w2s_examinee WHERE name LIKE N'%" + TextBox1.Text + "'");
+            SearchName("SELECT * FROM w2s_examinee WHERE name = N'" + TextBox1.Text + "'");
         }
 
         //prefix name-- tìm theo tên chính xác-- OK
@@ -168,7 +171,7 @@ namespace WpfApp1
         //test date-- tim theo ngày thi-- OK
         private void btn_TestDate(object sender, RoutedEventArgs e)
         {
-            SearchName("SELECT * FROM w2s_examinee WHERE test_date='" + TextBox2.Text + "'");
+            SearchName("SELECT * FROM w2s_examinee WHERE test_date='" + Combobox1.Text + "'");
         }
 
         void GridShowExaminee(Grid grd)
@@ -227,6 +230,25 @@ namespace WpfApp1
         {
             
 
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult h = System.Windows.Forms.MessageBox.Show("Bạn có muốn thoát không! ", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+            if (h == System.Windows.Forms.DialogResult.Yes)
+            {
+                this.Close();
+                System.Windows.Forms.Application.Exit();
+            }
+            else
+            {
+                e.Handled = true;
+            }
         }
     }
 }
