@@ -11,7 +11,7 @@ namespace WpfApp1
 {
     public enum TestType
     {
-        EN_A = 1,
+        EN_A = 0,
         EN_B,
         EN_C,
         IT_A,

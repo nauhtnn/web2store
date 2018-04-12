@@ -22,7 +22,7 @@ CREATE TABLE w2s_examinee (
 	grade_3 FLOAT,
 	PRIMARY KEY(test_date, test_type_id, examinee_index),
 	FOREIGN KEY(test_type_id) REFERENCES w2s_test_type(test_type_id),
-	CHECK((3 < test_type_id AND grade_3 IS NULL) OR (test_type_id < 4 AND grade_3 IS NOT NULL))
+	--CHECK((3 < test_type_id AND grade_3 IS NULL) OR (test_type_id < 4 AND grade_3 IS NOT NULL))
 );
 DROP TABLE w2s_examinee;
 DROP TABLE w2s_test_type;
@@ -53,11 +53,11 @@ Create table HoSo
 
 -- 1 Tìm theo tên (Chính xác)
 Select *from dbo.TTLA
-where Ten like 'Trân%' and [ngày thi] like '%14%' and [NGÀY THI] like '%12%' and [NGÀY THI] like '%2008%' 
+where Ten like N'Trân%' and [ngày thi] like '%14%' and [NGÀY THI] like '%12%' and [NGÀY THI] like '%2008%' 
 
 --2 Tìm theo h?(Nh?p h? nguy?n, tr?n nhung nh?p Tr, Nguy thì du?c)
 Select *From dbo.TTLA
-where [H? VÀ TÊN] like 'Nguy%' Select *from dbo.TTLA
+where [H? VÀ TÊN] like N'Nguy%' Select *from dbo.TTLA
 where Ten like 'Trân%' and [ngày thi] like '%14%' and [NGÀY THI] like '%12%' and [NGÀY THI] like '%2008%' 
 
 -- 3 Tìm theo tên g?n dúng

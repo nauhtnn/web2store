@@ -31,11 +31,18 @@ namespace WpfApp1
        
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            System.Windows.Forms.MessageBox.Show("Bạn có chắc muốn thoát không?",
-                "THÔNG BÁO", MessageBoxButtons.YesNoCancel);
-            System.Windows.Application.Current.Shutdown();
+            /*DialogResult h = System.Windows.Forms.MessageBox.Show("Bạn co` muốn thoát ?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+            if (h == DialogResult.Yes)
+            {
+                System.Windows.Forms.Application.Exit();
+            }
+            else
+            {
+               e.Cancel = true;
+            }*/
+            this.Close();
         }
-
+        
         private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
             
@@ -45,6 +52,8 @@ namespace WpfApp1
             dlg.DefaultExt = ".xlsx";
             dlg.Filter = "spreadsheet (.xlsx;.csv)|*.xlsx;*.csv";
             System.Windows.Forms.DialogResult result = dlg.ShowDialog();
+            System.Windows.Forms.MessageBox.Show("Lấy dữ liệu thành công",
+                "Thông báo",MessageBoxButtons.OK) ;
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
@@ -57,7 +66,7 @@ namespace WpfApp1
 
         SqlConnection GetDBConnection()
         {
-            string cn = "Data Source=.\\TESTINSTANCE;Initial Catalog=web2store;Integrated Security=True";
+            string cn = "Server=.\\SQLEXPRESS;Database=quanlychungchi;Integrated Security=True";
             SqlConnection conn = null;
             try
             {
@@ -82,10 +91,11 @@ namespace WpfApp1
 			try
             {
                 cmd.ExecuteNonQuery();
+                System.Windows.MessageBox.Show( "Nhập dữ liệu thành công!","Thông báo",MessageBoxButton.OK);
             }
             catch(SqlException ex)
             {
-                System.Windows.MessageBox.Show(ex.ToString(), "SQL cmd error");
+                System.Windows.MessageBox.Show("Dữ liệu này đã được lấy!", "Thông báo", MessageBoxButton.OK);
                 return;
             }
         }
@@ -134,28 +144,28 @@ namespace WpfApp1
         //approximate name
         private void btn_ApproxName(object sender, RoutedEventArgs e)
         {
-            SearchName("SELECT * FROM w2s_examinee WHERE name LIKE N'%" + TextBox1.Text + "'");//todo
+            SearchName("SELECT * FROM w2s_examinee WHERE name LIKE N'%" + TextBox1.Text + "%'");//todo
         }
 
-        //exact name
+        //exact name-- tim theo ho ten chinh xac --- ok
         private void btn_ExactName(object sender, RoutedEventArgs e)
         {
-            //todo
+            SearchName("SELECT * FROM w2s_examinee WHERE name LIKE N'%" + TextBox1.Text + "'");
         }
 
-        //prefix name
+        //prefix name-- tìm theo tên chính xác-- OK
         private void btn_PrefixName(object sender, RoutedEventArgs e)
         {
-            SearchName("SELECT * FROM w2s_examinee WHERE name LIKE N'%" + TextBox1.Text + "'");//todo LIKE or =
+            SearchName("SELECT * FROM w2s_examinee WHERE name LIKE N'%" + TextBox1.Text + "'");
         }
 
         //postfix name
         private void btn_SuffixName(object sender, RoutedEventArgs e)
         {
-            //todo
+            SearchName("SELECT * FROM w2s_examinee WHERE name LIKE N'" + TextBox1.Text + "%'");
         }
 
-        //test date
+        //test date-- tim theo ngày thi-- OK
         private void btn_TestDate(object sender, RoutedEventArgs e)
         {
             SearchName("SELECT * FROM w2s_examinee WHERE test_date='" + TextBox2.Text + "'");
@@ -211,6 +221,12 @@ namespace WpfApp1
                 //
                 ++r;
             }
+        }
+
+        private void TextBox1_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
+
         }
     }
 }
