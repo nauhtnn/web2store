@@ -43,7 +43,7 @@ namespace WpfApp1
             }
             
         }
-        
+       
         private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
 
@@ -106,6 +106,11 @@ namespace WpfApp1
         private void Main_Loaded(object sender, RoutedEventArgs e)
         {
             mBoard = new Board();
+            btn_ngaythi.IsEnabled = false;
+            btn_hoten.IsEnabled = false;
+            btn_ho.IsEnabled = false;
+            btn_ten.IsEnabled = false;
+
         }
 
         private void SearchName(string qry)
@@ -226,11 +231,6 @@ namespace WpfApp1
             }
         }
 
-        private void TextBox1_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            
-
-        }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -249,6 +249,26 @@ namespace WpfApp1
             {
                 e.Handled = true;
             }
+        }
+
+
+        private void TextBox1_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            btn_ngaythi.IsEnabled = false;
+            btn_hoten.IsEnabled = true;
+            btn_ho.IsEnabled = true;
+            btn_ten.IsEnabled = true;
+            
+            
+        }
+        private void Combobox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            btn_hoten.IsEnabled = false;
+            btn_ho.IsEnabled = false;
+            btn_ten.IsEnabled = false;
+            btn_ngaythi.IsEnabled = true;
+            
+
         }
     }
 }
