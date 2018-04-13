@@ -1,0 +1,26 @@
+bu?c 1: alt+f11 --> h?p tho?i Microsoft visual basic... xu?t hi?n
+bu?c 2: Insert-->Module, sau dó dán do?n code vào:
+
+
+Sub Combine()
+  Dim J As Integer
+  On Error Resume Next
+  Sheets(1).Select
+  Worksheets.Add
+  Sheets(1).Name = "Combined"
+  Sheets(2).Activate
+  Range("A1").EntireRow.Select
+  Selection.Copy Destination:=Sheets(1).Range("A1")
+  For J = 2 To Sheets.Count
+  Sheets(J).Activate
+  Range("A1").Select
+  Selection.CurrentRegion.Select
+  Selection.Offset(1, 0).Resize(Selection.Rows.Count - 1).Select
+  Selection.Copy Destination:=Sheets(1).Range("A65536").End(xlUp)(2)
+  Next
+End Sub
+
+
+bu?c 3: b?m f5 d? ch?y
+t?t c? d? li?u trong trang tính du?c t?p h?p thành 1 sheet combined d?t tru?c các trang tính khác.
+
